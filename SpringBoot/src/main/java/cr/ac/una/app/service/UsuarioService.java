@@ -32,6 +32,10 @@ public class UsuarioService {
         return usuarioData.findAll();
     }
 
+    public List<Usuario> obtenerListaUsuariosPorEstado(boolean estado) {
+        return usuarioData.findByEstado(estado);
+    }
+
     @Transactional
     public Response<Usuario> obtenerUsuarioPorID(Integer UsuarioID) {
         try {

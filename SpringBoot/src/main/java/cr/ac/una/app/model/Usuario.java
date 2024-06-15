@@ -51,7 +51,7 @@ public class Usuario {
 	//<- Pattern verifica que el numero de telefono tenga un formato valido ->//
 	//<- Temporal le indica a JPA como debe guardarse la fecha en la BD     ->//
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = CREATED_AT, nullable = false)
+    @Column(name = CREATED_AT, nullable = false, columnDefinition = "DATETIME")
     private Date fechaCreacion;
 
     @Column(name = ESTADO, nullable = false)

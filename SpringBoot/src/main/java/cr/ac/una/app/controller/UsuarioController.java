@@ -38,6 +38,20 @@ public class UsuarioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/getActive")
+    public ResponseEntity<Response<List<Usuario>>> getActiveUsuarios() {
+        List<Usuario> usuarios = usuarioService.obtenerListaUsuariosPorEstado(true);
+        Response<List<Usuario>> response = new Response<>("Listado de Usuarios", "Usuarios obtenidos con éxito", Response.SUCCESS, usuarios);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getInactive")
+    public ResponseEntity<Response<List<Usuario>>> getInactiveUsuarios() {
+        List<Usuario> usuarios = usuarioService.obtenerListaUsuariosPorEstado(false);
+        Response<List<Usuario>> response = new Response<>("Listado de Usuarios", "Usuarios obtenidos con éxito", Response.SUCCESS, usuarios);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/get")
     public ResponseEntity<Response<Usuario>> getUsuarioById(@RequestParam(name = "id") Integer usuarioID) {
         Response<Usuario> response = usuarioService.obtenerUsuarioPorID(usuarioID);
