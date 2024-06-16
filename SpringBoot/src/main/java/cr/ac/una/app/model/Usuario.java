@@ -81,7 +81,7 @@ public class Usuario {
 	//<- OneToOne indica una relacion 1a1 entre las entidades Direcion y Usuario en la BD 		   ->//
 	//<- Cascade indica que, si se borra un Usuario, tambien se borra la direccion relacionada     ->//
 	//<- ReferencedColumn indica la columna a la que va a hacer Referencia en la tabla Direcciones ->//
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = DIRECCION_ID, referencedColumnName = DIRECCION_ID, nullable = false)
 	@NotNull(message = "El campo 'Direccion' no puede ser nulo")
 	@Valid
