@@ -224,7 +224,7 @@ public class UsuarioService {
     }
 
     private void verificarPassword(String password) {
-        if (password == null || password.length() < 8) {
+        if (password == null) {
             throw new ConstraintViolationException("La contraseña debe tener al menos 8 caracteres", null);
         }
     }
