@@ -4,10 +4,15 @@ import axios from 'axios';
 import UserTable from './UserTable';
 import AddUserForm from './AddUserForm';
 import NotificationToast from './NotificationToast';
+import EditUserForm from './EditUserForm';
+import InfoUserForm from './InfoUserForm';
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isAddFormVisible, setIsAddFormVisible] = useState(false);
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const [isInfoFormVisible, setIsInfoFormVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Notification Variables
   const [toast, setToast] = useState({
@@ -17,6 +22,24 @@ function UserManagement() {
     showToast: false
   });
 
+  // Función para alternar la visibilidad del formulario
+  const toggleAddFormVisibility = () => {
+    setIsAddFormVisible(!isAddFormVisible);
+    setIsEditFormVisible(false);
+    setIsInfoFormVisible(false);
+  };
+  
+  const toggleEditFormVisibility = () => {
+    setIsEditFormVisible(!isEditFormVisible);
+    setIsAddFormVisible(false);
+    setIsInfoFormVisible(false);
+  };
+  
+  const toggleInfoFormVisibility = () => {
+    setIsInfoFormVisible(!isInfoFormVisible);
+    setIsAddFormVisible(false);
+    setIsEditFormVisible(false);
+  };  
 
   useEffect(() => {
     fetchUsers();
@@ -79,24 +102,124 @@ function UserManagement() {
   };
 
   // Función para eliminar un usuario
-  const deleteUser = id => {
-    // setUsers(users.filter(user => user.id !== id));
-    alert(`Eliminar al usuario con ID ${id}`);
+  const deleteUser = async id => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
+    
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`http://localhost:8000/usuarios/delete?id=${id}`);
+
+      if (response.data.success) {
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+        setUsers(users.filter(user => user.id !== id));
+        fetchUsers();
+      } else {
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+      }
+    } catch (error) {
+      setToast({
+        message: error.message,
+        title: 'Error inesperado',
+        type: 'error',
+        showToast: true
+      });
+    }
   };
 
-  // Función para mostrar detalles de un usuario (no implementada)
-  const showUser = id => {
-    alert(`Mostrar detalles del usuario con ID ${id}`);
+  // Función para mostrar detalles de un usuario
+  const showUserInfo = async id => {
+    try {
+      const response = await axios.get(`http://localhost:8000/usuarios/get?id=${id}`);
+
+      if (response.data.success) {
+        setSelectedUser(response.data.data);
+        toggleInfoFormVisibility();
+      } else {
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+      }
+    } catch (error) {
+      setToast({
+        message: error.message,
+        title: 'Error inesperado',
+        type: 'error',
+        showToast: true
+      });
+    }
   };
 
-  // Función para actualizar información de un usuario (no implementada)
-  const updateUser = id => {
-    alert(`Actualizar información del usuario con ID ${id}`);
+  const showUser = async id => {
+    try {
+      const response = await axios.get(`http://localhost:8000/usuarios/get?id=${id}`);
+
+      if (response.data.success) {
+        setSelectedUser(response.data.data);
+        toggleEditFormVisibility();
+      } else {
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+      }
+    } catch (error) {
+      setToast({
+        message: error.message,
+        title: 'Error inesperado',
+        type: 'error',
+        showToast: true
+      });
+    }
   };
 
-  // Función para alternar la visibilidad del formulario
-  const toggleFormVisibility = () => {
-    setIsFormVisible(!isFormVisible);
+  // Función para actualizar información de un usuario
+  const updateUser = async updatedUser => {
+    try {
+      const response = await axios.put(`http://localhost:8000/usuarios/update`, updatedUser);
+
+      if (response.data.success) {
+        setUsers(users.map(user => (user.id === updatedUser.id ? updatedUser : user)));
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+        setIsEditFormVisible(false);
+      } else {
+        setToast({
+          message: response.data.message,
+          title: response.data.title,
+          type: response.data.type,
+          showToast: true
+        });
+      }
+    } catch (error) {
+      setToast({
+        message: error.message,
+        title: 'Error inesperado',
+        type: 'error',
+        showToast: true
+      });
+    }
   };
 
   return (
@@ -105,9 +228,9 @@ function UserManagement() {
       <div className="container mt-5">
         <h1 className="text-center mb-4">Gestión de Usuarios</h1>
         <div className="row">
-          {!isFormVisible && (
+          {!isAddFormVisible && (
             <div className="col-12 d-flex">
-              <button className="btn btn-primary" onClick={toggleFormVisibility}>
+              <button className="btn btn-primary" onClick={toggleAddFormVisibility}>
                 Añadir
               </button>
             </div>
@@ -117,12 +240,32 @@ function UserManagement() {
               users={users}
               deleteUser={deleteUser}
               showUser={showUser}
-              updateUser={updateUser}
+              showUserInfo={showUserInfo}
             />
           </div>
-          {isFormVisible && (
+          {isAddFormVisible && (
             <div className="col-12">
-              <AddUserForm addUser={addUser} toggleFormVisibility={toggleFormVisibility} />
+              <AddUserForm 
+                addUser={addUser} 
+                toggleFormVisibility={toggleAddFormVisibility}
+              />
+            </div>
+          )}
+          {isEditFormVisible &&(
+            <div className="col-12">
+              <EditUserForm 
+                user={selectedUser} 
+                updateUser={updateUser} 
+                toggleFormVisibility={toggleEditFormVisibility} 
+              />
+            </div>
+          )}
+          {isInfoFormVisible &&(
+            <div className="col-12">
+              <InfoUserForm 
+                user={selectedUser} 
+                toggleFormVisibility={toggleInfoFormVisibility}
+              />
             </div>
           )}
         </div>

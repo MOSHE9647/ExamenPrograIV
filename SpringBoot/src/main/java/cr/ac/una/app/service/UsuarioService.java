@@ -118,7 +118,6 @@ public class UsuarioService {
                 updatedUsuario.setDireccion(usuario.getDireccion());
                 updatedUsuario.setEmail(usuario.getEmail());
                 updatedUsuario.setTipo(usuario.getTipo());
-                updatedUsuario.setPassword(usuario.getPassword());
                 updatedUsuario.setEstado(usuario.isEstado());
 
                 Usuario savedUsuario = usuarioData.save(updatedUsuario);

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import { es } from 'date-fns/locale';
 // import { toZonedTime, format as formatWithTZ } from 'date-fns-tz';
 
-const UserTable = ({ users, deleteUser, showUser, updateUser }) => {
+const UserTable = ({ users, deleteUser, showUser, showUserInfo }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Cantidad de registros por página
@@ -57,21 +57,21 @@ const UserTable = ({ users, deleteUser, showUser, updateUser }) => {
               <td>
                 <button
                   className="btn btn-info btn-sm mr-2"
-                  onClick={() => showUser(user.id)}
+                  onClick={() => showUserInfo(user.id)}
                 >
-                  <i class="las la-info-circle"></i>
+                  <i className="las la-info-circle"></i>
                 </button>
                 <button
                   className="btn btn-warning btn-sm mr-2"
-                  onClick={() => updateUser(user.id)}
+                  onClick={() => showUser(user.id)}
                 >
-                  <i class="las la-user-edit"></i>
+                  <i className="las la-user-edit"></i>
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => deleteUser(user.id)}
                 >
-                  <i class="las la-trash-alt"></i>
+                  <i className="las la-trash-alt"></i>
                 </button>
               </td>
             </tr>

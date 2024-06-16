@@ -8,7 +8,17 @@ baseURL = 'http://localhost:8080/api/v1/usuarios'
 class UsuarioListAPI(APIView):
     def get(self, request):
         # Check for query parameters to determine which API to call
-        if 'active' in request.query_params:
+        id = request.query_params.get('id')
+        if id:
+            url = baseURL + '/get'
+            try:
+                response = requests.get(url, params={'id': id})
+                response.raise_for_status()  # Lanza un error si la respuesta HTTP no es 200
+                data = response.json()
+                return JsonResponse(data, safe=False)
+            except requests.exceptions.RequestException as e:
+                return JsonResponse({"error": str(e)}, status=500)
+        elif 'active' in request.query_params:
             url = baseURL + '/getActive'
             try:
                 response = requests.get(url)
@@ -35,17 +45,6 @@ class UsuarioListAPI(APIView):
                 return JsonResponse(data, safe=False)
             except requests.exceptions.RequestException as e:
                 return JsonResponse({"error": str(e)}, status=500)
-            
-class UsuarioDetailAPI(APIView):
-    def get(self, request, id):
-        url = baseURL + '/get'
-        try:
-            response = requests.get(url, params={'id': id})
-            response.raise_for_status()  # Lanza un error si la respuesta HTTP no es 200
-            data = response.json()
-            return JsonResponse(data, safe=False)
-        except requests.exceptions.RequestException as e:
-            return JsonResponse({"error": str(e)}, status=500)
 
 class UsuarioCreateAPI(APIView):
     def post(self, request):
