@@ -20,33 +20,35 @@ class UsuarioController {
         return $response;
     }
 
-    // Método para obtener todos los usuarios desde Spring Boot
+    // Método para reenviar las solicitudes a Node.js
+    private static function forwardToNode($path, $method = 'GET', $data = null) {
+        $url = 'http://localhost:3000' . $path;
+        return self::curlRequest($url, $method, $data);
+    }
+
+    // Método para obtener todos los usuarios desde Node.js
     public static function getAllUsuarios() {
-        $url = 'http://localhost:8080/api/usuarios';
-        $response = self::curlRequest($url);
+        $response = self::forwardToNode('/usuarios');
         echo $response;
     }
 
-    // Método para obtener usuarios activos desde Spring Boot
+    // Método para obtener usuarios activos desde Node.js
     public static function getActiveUsuarios() {
-        $url = 'http://localhost:8080/api/usuarios/active';
-        $response = self::curlRequest($url);
+        $response = self::forwardToNode('/usuarios/active');
         echo $response;
     }
 
-    // Método para obtener usuarios inactivos desde Spring Boot
+    // Método para obtener usuarios inactivos desde Node.js
     public static function getInactiveUsuarios() {
-        $url = 'http://localhost:8080/api/usuarios/inactive';
-        $response = self::curlRequest($url);
+        $response = self::forwardToNode('/usuarios/inactive');
         echo $response;
     }
 
-    // Método para obtener un usuario por su ID desde Spring Boot
+    // Método para obtener un usuario por su ID desde Node.js
     public static function getUsuarioById() {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $url = 'http://localhost:8080/api/usuarios/' . $id;
-            $response = self::curlRequest($url);
+            $response = self::forwardToNode('/usuarios/' . $id);
             echo $response;
         } else {
             http_response_code(400);
@@ -54,13 +56,12 @@ class UsuarioController {
         }
     }
 
-    // Método para crear un nuevo usuario en Spring Boot
+    // Método para crear un nuevo usuario en Node.js
     public static function createUsuario() {
         $data = json_decode(file_get_contents('php://input'), true);
-        
+
         if ($data) {
-            $url = 'http://localhost:8080/api/usuarios';
-            $response = self::curlRequest($url, 'POST', $data);
+            $response = self::forwardToNode('/usuarios', 'POST', $data);
             echo $response;
         } else {
             http_response_code(400);
@@ -68,14 +69,13 @@ class UsuarioController {
         }
     }
 
-    // Método para actualizar un usuario existente en Spring Boot
+    // Método para actualizar un usuario existente en Node.js
     public static function updateUsuario() {
         $data = json_decode(file_get_contents('php://input'), true);
-        
+
         if ($data && isset($data['id'])) {
             $id = $data['id'];
-            $url = 'http://localhost:8080/api/usuarios/' . $id;
-            $response = self::curlRequest($url, 'PUT', $data);
+            $response = self::forwardToNode('/usuarios/' . $id, 'PUT', $data);
             echo $response;
         } else {
             http_response_code(400);
@@ -83,12 +83,11 @@ class UsuarioController {
         }
     }
 
-    // Método para eliminar lógicamente un usuario en Spring Boot
+    // Método para eliminar lógicamente un usuario en Node.js
     public static function deleteUsuarioLogico() {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $url = 'http://localhost:8080/api/usuarios/' . $id . '/delete/logical';
-            $response = self::curlRequest($url, 'DELETE');
+            $response = self::forwardToNode('/usuarios/' . $id . '/delete/logical', 'DELETE');
             echo $response;
         } else {
             http_response_code(400);
@@ -96,19 +95,17 @@ class UsuarioController {
         }
     }
 
-    // Método para eliminar físicamente un usuario en Spring Boot
+    // Método para eliminar físicamente un usuario en Node.js
     public static function deleteUsuarioFisico() {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $url = 'http://localhost:8080/api/usuarios/' . $id . '/delete/physical';
-            $response = self::curlRequest($url, 'DELETE');
+            $response = self::forwardToNode('/usuarios/' . $id . '/delete/physical', 'DELETE');
             echo $response;
         } else {
             http_response_code(400);
             echo json_encode(array("message" => "ID de usuario no proporcionado"));
         }
     }
-
 }
 
 ?>
