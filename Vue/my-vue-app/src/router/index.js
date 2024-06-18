@@ -1,25 +1,43 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home.vue';  // Asegúrate de que la ruta sea correcta aquí
+import Usuarios from '../views/Usuarios.vue';
+import UsuarioDetail from '../views/UsuarioDetail.vue';
+import CreateUsuario from '../views/CreateUsuario.vue';
+import UpdateUsuario from '../views/UpdateUsuario.vue';
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
+    },
+    { 
+      path: '/vue',
+      name: 'Usuarios',
+      component: Usuarios
+    },
+    {
+      path: '/vue/usuarios/:id',
+      name: 'UsuarioDetail',
+      component: UsuarioDetail
+    },
+    {
+      path: '/vue/create',
+      name: 'CreateUsuario',
+      component: CreateUsuario
+    },
+    {
+      path: '/vue/update/:id',
+      name: 'UpdateUsuario',
+      component: UpdateUsuario
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/'
+    }
+  ]
+});
 
-export default router
+export default router;
