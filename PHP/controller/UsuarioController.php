@@ -59,7 +59,7 @@ class UsuarioController {
     // Método para crear un nuevo usuario en Node.js
     public static function createUsuario() {
         $data = json_decode(file_get_contents('php://input'), true);
-
+        
         if ($data) {
             $response = self::forwardToNode('/usuarios', 'POST', $data);
             echo $response;
@@ -72,7 +72,7 @@ class UsuarioController {
     // Método para actualizar un usuario existente en Node.js
     public static function updateUsuario() {
         $data = json_decode(file_get_contents('php://input'), true);
-
+        
         if ($data && isset($data['id'])) {
             $id = $data['id'];
             $response = self::forwardToNode('/usuarios/' . $id, 'PUT', $data);
@@ -106,6 +106,7 @@ class UsuarioController {
             echo json_encode(array("message" => "ID de usuario no proporcionado"));
         }
     }
+
 }
 
 ?>

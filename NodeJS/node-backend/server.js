@@ -1,7 +1,7 @@
 const express = require('express');
+const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const axios = require('axios');
 
 const app = express();
 
@@ -9,9 +9,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Forward request to Spring Boot
-const forwardRequest = async (path, method, data) => {
-    const url = `http://localhost:8080${path}`;
+// Function to forward requests to PHP
+const forwardToPhp = async (path, method, data) => {
+    const url = `http://localhost/proyecto_php/api/v1${path}`;
     const options = {
         method: method,
         url: url,
@@ -28,49 +28,49 @@ const forwardRequest = async (path, method, data) => {
     }
 };
 
-// Rutas
+// Define routes that forward to PHP
 app.get('/usuarios', async (req, res) => {
-    const response = await forwardRequest('/api/usuarios', 'GET');
+    const response = await forwardToPhp('/usuarios/getAll', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/active', async (req, res) => {
-    const response = await forwardRequest('/api/usuarios/active', 'GET');
+    const response = await forwardToPhp('/usuarios/getActive', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/inactive', async (req, res) => {
-    const response = await forwardRequest('/api/usuarios/inactive', 'GET');
+    const response = await forwardToPhp('/usuarios/getInactive', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/:id', async (req, res) => {
-    const response = await forwardRequest(`/api/usuarios/${req.params.id}`, 'GET');
+    const response = await forwardToPhp(`/usuarios/get?id=${req.params.id}`, 'GET');
     res.json(response);
 });
 
 app.post('/usuarios', async (req, res) => {
-    const response = await forwardRequest('/api/usuarios', 'POST', req.body);
+    const response = await forwardToPhp('/usuarios/create', 'POST', req.body);
     res.json(response);
 });
 
 app.put('/usuarios/:id', async (req, res) => {
-    const response = await forwardRequest(`/api/usuarios/${req.params.id}`, 'PUT', req.body);
+    const response = await forwardToPhp(`/usuarios/update`, 'PUT', { ...req.body, id: req.params.id });
     res.json(response);
 });
 
 app.delete('/usuarios/:id/delete/logical', async (req, res) => {
-    const response = await forwardRequest(`/api/usuarios/${req.params.id}/delete/logical`, 'DELETE');
+    const response = await forwardToPhp(`/usuarios/delete/logical?id=${req.params.id}`, 'DELETE');
     res.json(response);
 });
 
 app.delete('/usuarios/:id/delete/physical', async (req, res) => {
-    const response = await forwardRequest(`/api/usuarios/${req.params.id}/delete/physical`, 'DELETE');
+    const response = await forwardToPhp(`/usuarios/delete/physical?id=${req.params.id}`, 'DELETE');
     res.json(response);
 });
 
-// Iniciar el servidor
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor Node.js escuchando en el puerto ${PORT}`);
+    console.log(`Node.js server listening on port ${PORT}`);
 });
