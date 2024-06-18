@@ -1,0 +1,13 @@
+<div id="notification-container">
+    <div id="toastNotification" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid las {{ getIcon(type) }} check {{ type }}"></i>
+            <div class="message">
+                <span class="text text-1">{{ title }}</span>
+                <span class="text text-2">{{ message }}</span>
+            </div>
+        </div>
+        <i class="fa-solid las la-times close"></i>
+        <div class="progress {{ type }}"></div>
+    </div>
+</div>
