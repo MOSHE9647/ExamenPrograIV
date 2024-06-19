@@ -1,1 +1,47 @@
-<p>user works!</p>
+<div>
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Gestión de Usuarios</h1>
+      <div class="row">
+        @if (!isAddFormVisible) {
+            <div class="col-12 d-flex">
+                <button class="btn btn-primary" (click)="toggleAddFormVisibility()">
+                  Añadir
+                </button>
+            </div>
+        }
+        <div class="col-12 mb-4">
+            <!-- Aquí va la tabla de Usuarios desde UsersTableComponent -->
+            <app-users-table
+                [users]="users"
+                (editUser)="toggleEditFormVisibility($event)"
+                (deleteUser)="deleteUser($event)">
+            </app-users-table>
+        </div>
+        @if (isAddFormVisible) {
+            <div class="col-12">
+                <!-- <AddUserForm 
+                  addUser={addUser} 
+                  toggleFormVisibility={toggleAddFormVisibility}
+                /> -->
+            </div>
+        }
+        @if (isEditFormVisible) {
+            <div class="col-12">
+                <!-- <EditUserForm 
+                  user={selectedUser} 
+                  updateUser={updateUser} 
+                  toggleFormVisibility={toggleEditFormVisibility} 
+                /> -->
+            </div>
+        }
+        @if (isInfoFormVisible) {
+            <div class="col-12">
+                <!-- <InfoUserForm 
+                  user={selectedUser} 
+                  toggleFormVisibility={toggleInfoFormVisibility}
+                /> -->
+            </div>
+        }
+      </div>
+    </div>
+  </div>

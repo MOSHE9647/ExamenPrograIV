@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { es } from 'date-fns/locale';
-// import { toZonedTime, format as formatWithTZ } from 'date-fns-tz';
 
 const UserTable = ({ users, deleteUser, showUser, showUserInfo }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,9 +15,6 @@ const UserTable = ({ users, deleteUser, showUser, showUserInfo }) => {
   // Cambiar de página
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
-  // Zona horaria deseada
-  // const timeZone = 'America/Costa_Rica';
-
   return (
     <div className="table-responsive">
       <table className="table table-striped table-bordered">
@@ -32,7 +27,6 @@ const UserTable = ({ users, deleteUser, showUser, showUserInfo }) => {
             <th>Correo</th>
             <th>Tipo</th>
             <th>Estado</th>
-            {/* <th>Fecha de Creación</th> */}
             <th>Acciones</th>
           </tr>
         </thead>
@@ -43,17 +37,9 @@ const UserTable = ({ users, deleteUser, showUser, showUserInfo }) => {
               <td>{user.cedula}</td>
               <td>{`${user.nombre} ${user.apellido}`}</td>
               <td>{user.telefono}</td>
-              {/* <td>{`${user.direccion.distrito}, ${user.direccion.canton}, ${user.direccion.provincia}`}</td> */}
               <td>{user.email}</td>
               <td>{user.tipo}</td>
               <td>{user.estado ? 'Activo' : 'Inactivo'}</td>
-              {/* <td>
-                {formatWithTZ(
-                  toZonedTime(new Date(user.fechaCreacion), timeZone),
-                  "EEEE, d 'de' MMMM yyyy h:mma",
-                  { locale: es, timeZone }
-                )}
-              </td> */}
               <td>
                 <button
                   className="btn btn-info btn-sm mr-2"
