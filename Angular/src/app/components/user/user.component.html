@@ -13,33 +13,34 @@
             <!-- Aquí va la tabla de Usuarios desde UsersTableComponent -->
             <app-users-table
                 [users]="users"
+                (infoUser)="toggleInfoFormVisibility($event)"
                 (editUser)="toggleEditFormVisibility($event)"
                 (deleteUser)="deleteUser($event)">
             </app-users-table>
         </div>
         @if (isAddFormVisible) {
             <div class="col-12">
-                <!-- <AddUserForm 
-                  addUser={addUser} 
-                  toggleFormVisibility={toggleAddFormVisibility}
-                /> -->
+                <app-add-user-form
+                    (cancel)="hideForm()"
+                    (save)="createUser($event)">
+                </app-add-user-form>
             </div>
         }
         @if (isEditFormVisible) {
             <div class="col-12">
-                <!-- <EditUserForm 
-                  user={selectedUser} 
-                  updateUser={updateUser} 
-                  toggleFormVisibility={toggleEditFormVisibility} 
-                /> -->
+                <app-edit-user-form
+                    [user]="selectedUser"
+                    (cancel)="hideForm()"
+                    (save)="updateUser($event)">
+                </app-edit-user-form>
             </div>
         }
         @if (isInfoFormVisible) {
             <div class="col-12">
-                <!-- <InfoUserForm 
-                  user={selectedUser} 
-                  toggleFormVisibility={toggleInfoFormVisibility}
-                /> -->
+                <app-info-user-form
+                    [user]="selectedUser"
+                    (cancel)="hideForm()">
+                </app-info-user-form>
             </div>
         }
       </div>

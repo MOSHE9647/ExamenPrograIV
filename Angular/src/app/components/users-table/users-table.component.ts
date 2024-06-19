@@ -18,11 +18,15 @@ export class UsersTableComponent {
 
 	constructor() { }
 
+	onInfoUser(user: User): void {
+		this.infoUser.emit(user);
+	}
+
 	onEditUser(user: User): void {
 		this.editUser.emit(user);
 	}
 
-	onDeleteUser(userID: number): void {
+	onDeleteUser(userID: number | undefined): void {
 		this.deleteUser.emit(userID);
 	}
 

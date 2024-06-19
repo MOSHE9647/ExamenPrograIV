@@ -22,22 +22,13 @@
                 <td>{{ user.tipo }}</td>
                 <td>{{ user.estado ? 'Activo' : 'Inactivo' }}</td>
                 <td>
-                    <!-- <button class="btn btn-info btn-sm mr-2" (click)="showUserInfo(user.id)">
+                    <button class="btn btn-info btn-sm mr-2" (click)="onInfoUser(user)">
                         <i class="las la-info-circle"></i>
                     </button>
-                    <button class="btn btn-warning btn-sm mr-2" (click)="showUser(user.id)">
+                    <button class="btn btn-warning btn-sm mr-2" (click)="onEditUser(user)">
                         <i class="las la-user-edit"></i>
                     </button>
-                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
-                        <i class="las la-trash-alt"></i>
-                    </button> -->
-                    <button class="btn btn-info btn-sm mr-2">
-                        <i class="las la-info-circle"></i>
-                    </button>
-                    <button class="btn btn-warning btn-sm mr-2">
-                        <i class="las la-user-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm">
+                    <button class="btn btn-danger btn-sm" (click)="onDeleteUser(user.id)">
                         <i class="las la-trash-alt"></i>
                     </button>
                 </td>

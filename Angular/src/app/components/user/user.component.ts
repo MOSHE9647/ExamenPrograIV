@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { UsersTableComponent } from "../users-table/users-table.component";
+import { AddUserFormComponent } from "../add-user-form/add-user-form.component";
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { ApiResponse } from '../../models/api.response.model';
+import { EditUserFormComponent } from '../edit-user-form/edit-user-form.component';
+import { InfoUserFormComponent } from '../info-user-form/info-user-form.component';
 
 @Component({
 	selector: 'app-user',
 	standalone: true,
 	templateUrl: './user.component.html',
 	styles: [],
-	imports: [UsersTableComponent, CommonModule]
+	imports: [
+		CommonModule,
+		UsersTableComponent,
+		AddUserFormComponent,
+		EditUserFormComponent,
+		InfoUserFormComponent
+	]
 })
 export class UserComponent implements OnInit {
 
@@ -60,7 +69,6 @@ export class UserComponent implements OnInit {
 		this.userService.getUsers({}).subscribe((response: ApiResponse<User | User[]>) => {
 			if (response.success) {
 				this.users = response.data as User[];
-				this.userService.showToast(response.message, response.title, response.type);
 			} else {
 				this.userService.showToast(response.message, response.title, response.type);
 				console.error(response.message);

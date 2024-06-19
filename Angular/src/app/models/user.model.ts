@@ -15,6 +15,6 @@ export interface User {
     email: string,
     tipo: string,
     password: string,
-    estado: boolean,
-    fechaCreacion: Date | null
+    estado?: boolean,
+    fechaCreacion?: Date | null
 }

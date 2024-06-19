@@ -1,0 +1,81 @@
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Agregar Usuario</h3>
+        <form class='container' [formGroup]="userForm" (ngSubmit)="onSave()">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" formControlName="nombre" required />
+                </div>
+                <div class="col-md-4">
+                    <label>Apellido:</label>
+                    <input type="text" class="form-control" formControlName="apellido" required />
+                </div>
+                <div class="col-md-4">
+                    <label>Cédula:</label>
+                    <input type="text" class="form-control" formControlName="cedula" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Teléfono:</label>
+                    <input type="text" class="form-control" formControlName="telefono" required />
+                </div>
+                <div class="col-md-6">
+                    <label>Email:</label>
+                    <input type="email" class="form-control" formControlName="email" type="email" required />
+                </div>
+            </div>
+            <fieldset formGroupName="direccion">
+                <div class="row" >
+                    <div class="col-md-4">
+                        <label>Provincia:</label>
+                        <input type="text" class="form-control" formControlName="provincia" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Cantón:</label>
+                        <input type="text" class="form-control" formControlName="canton" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Distrito:</label>
+                        <input type="text" class="form-control" formControlName="distrito" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Barrio:</label>
+                        <input type="text" class="form-control" formControlName="barrio" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Información Adicional:</label>
+                        <input type="text" class="form-control" formControlName="informacionAdicional" />
+                    </div>
+                </div>
+            </fieldset>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Tipo de Usuario:</label>
+                    <select class="form-control" formControlName="tipo" required>
+                        <option value="Normal">Normal</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Contraseña:</label>
+                    <input type="password" class="form-control" formControlName="password" required />
+                </div>
+                <div class="col-md-6">
+                    <label>Confirmar Contraseña:</label>
+                    <input type="password" class="form-control" formControlName="confirmPassword" required />
+                    @if (userForm.hasError('mismatch') && userForm.get('confirmPassword')?.touched) {
+                        {{ this.showToast('Las contraseñas no coinciden', 'Error', 'error') }}
+                    }
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Usuario</button>
+            <button type="button" class="btn btn-danger" (click)="onCancel()">Cancelar</button>
+        </form>
+    </div>
+</div>
