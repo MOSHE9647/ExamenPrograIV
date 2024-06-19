@@ -1,4 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { User } from "../../models/user.model";
+import { UserService } from '../../service/user.service';
+import { response } from 'express';
+import { ApiResponse } from '../../models/api.response.model';
 
 @Component({
 	selector: 'app-user',
@@ -7,27 +11,26 @@ import { Component, Input } from '@angular/core';
 	templateUrl: './user.component.html',
 	styleUrl: './user.component.css'
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
 
-	@Input() user: User = {
-		id: 0,
-		nombre: '',
-		apellido: '',
-		cedula: '',
-		telefono: '',
-		direccion: {
-			id: 0,
-			provincia: '',
-			canton: '',
-			distrito: '',
-			barrio: '',
-			informacionAdicional: ''
-		},
-		email: '',
-		tipo: '',
-		password: '',
-		estado: true,
-		fechaCreacion: null
+	user: User | null = null;
+	users: User[] = [];
+
+	constructor(private userService: UserService) {}
+
+	ngOnInit(): void {
+		this.loadAllUsers();
+	}
+
+	loadAllUsers(): void {
+		this.userService.getUsers({}).subscribe((response: ApiResponse<User | User[]>) => {
+			if (response.success) {
+				this.users = response.data as User[];
+				console.log(this.users);
+			} else {
+				console.error(response.message);
+			}
+		})
 	}
 
 }

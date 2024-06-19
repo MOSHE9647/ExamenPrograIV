@@ -1,40 +1,52 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NotificationService } from './notification.service';
+
+import { ApiResponse } from "../models/api.response.model";
+import { User } from "../models/user.model";
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
 
-    constructor(private http: HttpClient, private notification: NotificationService) { }
+    // URL de la Conexión a Django:
+    baseURL = 'http://localhost:8000/usuarios';
 
-    getUsers(): Observable<User[]> {
-        return this.http.get<User[]>('https://your-api-url/users');
+    // Inyección de la Dependencia para Solicitudes HTTP:
+    constructor(private http: HttpClient) { }
+
+    // Obtiene un Usuario o Lista de Usuarios según los parametros recibidos:
+    getUsers(params: { id?: number, active?: boolean, inactive?: boolean }): Observable<ApiResponse<User | User[]>> {
+        // Variable para agregar parametros a la solicitud http:
+        let httpParams = new HttpParams();
+
+        // Verifica si se recibio algun parametro en la llamada a la funcion:
+        if (params.id) { httpParams = httpParams.set('id', params.id.toString()); }
+        if (params.active) { httpParams = httpParams.set('active', 'true'); }
+        if (params.inactive) { httpParams = httpParams.set('inactive', 'true'); }
+
+        // Hace el llamado HTTP a la API en Django con los parámetros según sea necesario:
+        return this.http.get<ApiResponse<User | User[]>>(`${this.baseURL}/get`, { params: httpParams });
     }
 
-    getUserById(id: number): Observable<User> {
-        return this.http.get<User>(`https://your-api-url/users/${id}`);
+    // Crea un nuevo Usuario en la BD:
+    createUser(user: User): Observable<ApiResponse<User>> {
+        return this.http.post<ApiResponse<User>>(`${this.baseURL}/create`, user);
     }
 
-    createUser(user: User): Observable<User> {
-        return this.http.post<User>('https://your-api-url/users', user);
+    // Actualiza un usuario existente:
+    updateUser(user: User): Observable<ApiResponse<User>> {
+        return this.http.put<ApiResponse<User>>(`${this.baseURL}/update`, user);
     }
 
-    updateUser(user: User): Observable<User> {
-        return this.http.put<User>(`https://your-api-url/users/${user.id}`, user);
+    // Elimina un usuario de la BD, ya sea de forma lógica (estado = false) o permanente:
+    deleteUser(userId: number, logical: boolean = false): Observable<ApiResponse<any>> {
+        let params = new HttpParams().set('id', userId.toString());
+
+        if (logical) { params = params.set('logical', 'true'); }
+        
+        return this.http.delete<ApiResponse<any>>(`${this.baseURL}/delete`, { params });
     }
 
-    deleteUser(id: number): Observable<any> {
-        return this.http.delete(`https://your-api-url/users/${id}`);
-    }
-}
-
-interface ApiResponse {
-  success: boolean;
-  title: string;
-  message: string;
-  type: string;
-  data: User | null;
 }
