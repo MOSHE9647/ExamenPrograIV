@@ -110,16 +110,19 @@ export class UserComponent implements OnInit {
 	}
 
 	deleteUser(userId: number, logical: boolean = false): void {
-		this.userService.deleteUser(userId, logical).subscribe((response: ApiResponse<any>) => {
-			if (response.success) {
-				this.userService.showToast(response.message, response.title, response.type);
-				console.log('Usuario eliminado con éxito');
-				this.loadUsers();
-			} else {
-				this.userService.showToast(response.message, response.title, response.type);
-				console.error(response.message);
-			}
-		});
+		const confirmed = window.confirm(`¿Está seguro de querer eliminar al usuario? Esta acción es permanente`);
+		if (confirmed && userId) {
+			this.userService.deleteUser(userId, logical).subscribe((response: ApiResponse<any>) => {
+				if (response.success) {
+					this.userService.showToast(response.message, response.title, response.type);
+					console.log('Usuario eliminado con éxito');
+					this.loadUsers();
+				} else {
+					this.userService.showToast(response.message, response.title, response.type);
+					console.error(response.message);
+				}
+			});
+		}
 	}
 
 }

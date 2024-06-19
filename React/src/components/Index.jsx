@@ -19,7 +19,7 @@ function Index() {
         {links.map(link => (
           <li key={link.name} className="list-group-item list-group-item-action list-group-item-light">
             {link.external ? (
-              <a href={link.path} rel="noopener noreferrer" target="_blank">
+              <a href={link.path} rel="noopener noreferrer">
                 {link.name}
               </a>
             ) : (

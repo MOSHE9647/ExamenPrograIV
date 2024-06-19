@@ -7,7 +7,7 @@ import { User } from '../../models/user.model';
 	standalone: true,
 	imports: [CommonModule],
 	templateUrl: './users-table.component.html',
-	styleUrl: './users-table.component.css'
+	styles:[]
 })
 export class UsersTableComponent {
 

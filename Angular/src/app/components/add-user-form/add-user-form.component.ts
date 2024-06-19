@@ -34,7 +34,8 @@ export class AddUserFormComponent {
 		}),
 		email: new FormControl('', [Validators.required, Validators.email]),
 		tipo: new FormControl('', Validators.required),
-		password: new FormControl('', Validators.required)
+		password: new FormControl('', Validators.required),
+		confirmPassword: new FormControl('', Validators.required)
 	}, { validators: this.passwordMatchValidator });
 
 	onSave(): void {
