@@ -1,6 +1,6 @@
 <?php
 // URL del servicio de Spring Boot para usuarios
-$baseUrl = "http://localhost:8080/api/v1/usuarios";
+$baseUrl = "http://localhost:8081/api/v1/usuarios";
 
 // Obtener el ID del usuario desde la URL (si aplica)
 $idUsuario = isset($_GET['id']) ? $_GET['id'] : null;

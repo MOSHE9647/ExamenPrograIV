@@ -7,7 +7,22 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors()); // Configuración CORS por defecto
+
+// Endpoint para hacer la solicitud al archivo PHP
+app.get('/usuarios', async (req, res) => {
+    try {
+        // URL del servicio PHP en el puerto 80
+        const url = 'http://localhost:80/api.php'; // Ajusta la URL según la ubicación de api.php
+
+        // Realizar la solicitud GET utilizando axios
+        const response = await axios.get(url);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error al obtener usuarios desde PHP:', error.message);
+        res.status(500).json({ error: 'Error al obtener usuarios desde PHP' });
+    }
+});
 
 // Function to forward requests to PHP
 const forwardToPhp = async (path, method, data) => {
