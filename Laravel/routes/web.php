@@ -1,40 +1,26 @@
+<?php
+
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Ruta principal
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
-// Ruta para Vue.js (simplemente redirige a Vue por ahora)
-Route::get('/usuarios/vue', function () {
-    return "Redirigir a la aplicación Vue.js"; // Aquí puedes redirigir a la ruta Vue.js correspondiente
-});
-
-// Ruta para Laravel
-Route::get('/usuarios/laravel', function () {
-    return view('usuarios.laravel');
-});
-
-// Ruta para obtener los usuarios
-Route::get('/usuarios', function () {
-    // Simulación de datos de usuarios
-    $usuarios = [
-        ['id' => 1, 'nombre' => 'Juan', 'apellido' => 'Pérez', 'cedula' => '12345678', 'telefono' => '+506 1234 5678', 'email' => 'juan@example.com'],
-        ['id' => 2, 'nombre' => 'Ana', 'apellido' => 'Gómez', 'cedula' => '87654321', 'telefono' => '+506 8765 4321', 'email' => 'ana@example.com'],
-    ];
-
-    return response()->json($usuarios);
-});
-
-// Rutas para las acciones de usuario
-Route::get('/usuarios/{id}/edit', function ($id) {
-    return "Formulario para editar usuario con ID: $id"; // Aquí iría la vista de edición
-});
-
-Route::get('/usuarios/{id}', function ($id) {
-    return "Detalles del usuario con ID: $id"; // Aquí iría la vista de detalles del usuario
-});
-
-Route::delete('/usuarios/{id}', function ($id) {
-    return response()->json(['success' => true, 'message' => 'Usuario eliminado con éxito']);
-});
+Route::get('/usuarios', [UserController::class, 'getAllUsers']);
+Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
+Route::post('/usuarios', [UserController::class, 'createUser']);
+Route::put('/usuarios/{id}', [UserController::class, 'updateUser']);
+Route::delete('/usuarios/{id}/delete/logical', [UserController::class, 'deleteUserLogical']);
+Route::delete('/usuarios/{id}/delete/physical', [UserController::class, 'deleteUserPhysical']);

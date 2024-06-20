@@ -1,11 +1,19 @@
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UsuarioController;
+<?php
 
-Route::get('/usuarios', [UsuarioController::class, 'getAllUsuarios']);
-Route::get('/usuarios/active', [UsuarioController::class, 'getActiveUsuarios']);
-Route::get('/usuarios/inactive', [UsuarioController::class, 'getInactiveUsuarios']);
-Route::get('/usuarios/{id}', [UsuarioController::class, 'getUsuarioById']);
-Route::post('/usuarios', [UsuarioController::class, 'createUsuario']);
-Route::put('/usuarios/{id}', [UsuarioController::class, 'updateUsuario']);
-Route::delete('/usuarios/{id}/delete/logical', [UsuarioController::class, 'deleteUsuarioLogico']);
-Route::delete('/usuarios/{id}/delete/physical', [UsuarioController::class, 'deleteUsuarioFisico']);
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
