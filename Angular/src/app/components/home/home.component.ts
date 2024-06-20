@@ -34,7 +34,7 @@ export class HomeComponent {
 	frameworks: FrameworkLink[] = [
 		{ name: 'React', url: Environment.apiUrl + Environment.reactPort + '/react' },
 		{ name: 'Angular', url: '/angular' },
-		{ name: 'Vue', url: Environment.apiUrl + Environment.vuePort + '/vue' },
+		{ name: 'Vue', url: Environment.apiJasonUrl + Environment.vuePort + '/vue' },
 		{ name: 'Laravel', url: 'https://laravel.com' }
 	];
 
