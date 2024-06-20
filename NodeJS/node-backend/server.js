@@ -9,28 +9,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors()); // Configuración CORS por defecto
 
-// Endpoint para hacer la solicitud al archivo PHP
-app.get('/usuarios', async (req, res) => {
-    try {
-        // URL del servicio PHP en el puerto 80
-        const url = 'http://localhost:80/api.php'; // Ajusta la URL según la ubicación de api.php
-
-        // Realizar la solicitud GET utilizando axios
-        const response = await axios.get(url);
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error al obtener usuarios desde PHP:', error.message);
-        res.status(500).json({ error: 'Error al obtener usuarios desde PHP' });
-    }
-});
-
 // Function to forward requests to PHP
-const forwardToPhp = async (path, method, data) => {
-    const url = `http://localhost/proyecto_php/api/v1${path}`;
+const forwardToPhp = async (path, method, data = {}) => {
+    const url =" http://localhost/ExamenPrograIV/PHP/api.php/${path}";
     const options = {
         method: method,
         url: url,
-        data: data,
+        data: method !== 'GET' ? data : undefined, // Only attach data if method is not GET
         headers: { 'Content-Type': 'application/json' }
     };
 
@@ -38,54 +23,54 @@ const forwardToPhp = async (path, method, data) => {
         const response = await axios(options);
         return response.data;
     } catch (error) {
-        console.error('Error forwarding request:', error);
+        console.error('Error forwarding request:', error.message);
         return { error: 'Error forwarding request' };
     }
 };
 
 // Define routes that forward to PHP
 app.get('/usuarios', async (req, res) => {
-    const response = await forwardToPhp('/usuarios/getAll', 'GET');
+    const response = await forwardToPhp('?action=getAll', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/active', async (req, res) => {
-    const response = await forwardToPhp('/usuarios/getActive', 'GET');
+    const response = await forwardToPhp('?action=getActive', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/inactive', async (req, res) => {
-    const response = await forwardToPhp('/usuarios/getInactive', 'GET');
+    const response = await forwardToPhp('?action=getInactive', 'GET');
     res.json(response);
 });
 
 app.get('/usuarios/:id', async (req, res) => {
-    const response = await forwardToPhp(`/usuarios/get?id=${req.params.id}`, 'GET');
+    const response = await forwardToPhp(`?action=get&id=${req.params.id}`, 'GET');
     res.json(response);
 });
 
 app.post('/usuarios', async (req, res) => {
-    const response = await forwardToPhp('/usuarios/create', 'POST', req.body);
+    const response = await forwardToPhp('?action=create', 'POST', req.body);
     res.json(response);
 });
 
 app.put('/usuarios/:id', async (req, res) => {
-    const response = await forwardToPhp(`/usuarios/update`, 'PUT', { ...req.body, id: req.params.id });
+    const response = await forwardToPhp(`?action=update`, 'PUT', { ...req.body, id: req.params.id });
     res.json(response);
 });
 
 app.delete('/usuarios/:id/delete/logical', async (req, res) => {
-    const response = await forwardToPhp(`/usuarios/delete/logical?id=${req.params.id}`, 'DELETE');
+    const response = await forwardToPhp(`?action=delete/logical&id=${req.params.id}`, 'DELETE');
     res.json(response);
 });
 
 app.delete('/usuarios/:id/delete/physical', async (req, res) => {
-    const response = await forwardToPhp(`/usuarios/delete/physical?id=${req.params.id}`, 'DELETE');
+    const response = await forwardToPhp(`?action=delete/physical&id=${req.params.id}`, 'DELETE');
     res.json(response);
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 app.listen(PORT, () => {
     console.log(`Node.js server listening on port ${PORT}`);
 });
