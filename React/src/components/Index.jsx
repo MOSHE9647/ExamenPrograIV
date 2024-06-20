@@ -8,7 +8,7 @@ function Index() {
   const links = [
     { name: 'React', path: '/react' },
     { name: 'Angular', path: process.env.REACT_APP_API_URL + process.env.REACT_APP_ANGULAR_PORT + '/angular', external: true },
-    { name: 'Vue', path: 'https://vuejs.org', external: true },
+    { name: 'Vue', path: process.env.REACT_APP_API_URL + process.env.REACT_APP_VUE_PORT + '/vue', external: true },
     { name: 'Laravel', path: 'https://laravel.com', external: true }
   ];
 

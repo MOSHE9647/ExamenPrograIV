@@ -50,8 +50,5 @@ __pycache__/
 *.log
 /vendor/
 
-# Ignore any local development environment file
-.env
-
 ### VS Code ###
 .vscode/
