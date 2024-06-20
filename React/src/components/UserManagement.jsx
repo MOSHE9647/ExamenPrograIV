@@ -45,9 +45,11 @@ function UserManagement() {
     fetchUsers();
   }, []);
 
+  const baseURL = 'http://25.7.147.209:8000/usuarios';
+
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/usuarios/get');
+      const response = await axios.get(baseURL + '/get');
 
       if (response.data.success) {
         setUsers(response.data.data);
@@ -72,7 +74,7 @@ function UserManagement() {
   // Función para agregar un nuevo usuario
   const addUser = async newUser => {
     try {
-      const response = await axios.post('http://localhost:8000/usuarios/create', newUser);
+      const response = await axios.post(baseURL + '/create', newUser);
 
       if (response.data.success) {
         // Actualiza la lista de usuarios después de agregar el nuevo usuario
@@ -110,7 +112,7 @@ function UserManagement() {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:8000/usuarios/delete?id=${id}`);
+      const response = await axios.delete(`${baseURL}/delete?id=${id}`);
 
       if (response.data.success) {
         setToast({
@@ -142,7 +144,7 @@ function UserManagement() {
   // Función para mostrar detalles de un usuario
   const showUserInfo = async id => {
     try {
-      const response = await axios.get(`http://localhost:8000/usuarios/get?id=${id}`);
+      const response = await axios.get(`${baseURL}/get?id=${id}`);
 
       if (response.data.success) {
         setSelectedUser(response.data.data);
@@ -167,7 +169,7 @@ function UserManagement() {
 
   const showUser = async id => {
     try {
-      const response = await axios.get(`http://localhost:8000/usuarios/get?id=${id}`);
+      const response = await axios.get(`${baseURL}/get?id=${id}`);
 
       if (response.data.success) {
         setSelectedUser(response.data.data);
@@ -193,7 +195,7 @@ function UserManagement() {
   // Función para actualizar información de un usuario
   const updateUser = async updatedUser => {
     try {
-      const response = await axios.put(`http://localhost:8000/usuarios/update`, updatedUser);
+      const response = await axios.put(`${baseURL}/update`, updatedUser);
 
       if (response.data.success) {
         setUsers(users.map(user => (user.id === updatedUser.id ? updatedUser : user)));

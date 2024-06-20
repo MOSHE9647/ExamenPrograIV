@@ -6,6 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from "../models/api.response.model";
 import { User } from "../models/user.model";
 import { ToastrService } from 'ngx-toastr';
+import { Environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserService {
 
     // URL de la Conexión a Django:
-    baseURL = 'http://localhost:8000/usuarios';
+    baseURL = Environment.apiUrl + Environment.djangoPort + '/usuarios';
 
     // Inyección de la Dependencia para Solicitudes HTTP:
     constructor(private http: HttpClient, private toast: ToastrService) { }

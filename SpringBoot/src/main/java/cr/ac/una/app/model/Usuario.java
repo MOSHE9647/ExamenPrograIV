@@ -67,6 +67,7 @@ public class Usuario {
 	private String apellido;
 
 	@Column(name = CEDULA, nullable = false)
+	@Pattern(regexp = "\\d \\d{4} \\d{4}", message = "Ingrese un número de cédula válido (Ej: 1 1234 5678)")
 	@NotBlank(message = "El campo 'Cedula' no puede estar vacio")
 	private String cedula;
 

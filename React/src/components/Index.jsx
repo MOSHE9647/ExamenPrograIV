@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function Index() {
   const links = [
     { name: 'React', path: '/react' },
-    { name: 'Angular', path: 'http://localhost:4200/angular', external: true },
+    { name: 'Angular', path: process.env.REACT_APP_API_URL + process.env.REACT_APP_ANGULAR_PORT + '/angular', external: true },
     { name: 'Vue', path: 'https://vuejs.org', external: true },
     { name: 'Laravel', path: 'https://laravel.com', external: true }
   ];

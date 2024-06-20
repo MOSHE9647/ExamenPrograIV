@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Environment } from "../../../environments/environment";
 
 interface FrameworkLink {
 	name: string;
@@ -31,7 +32,7 @@ interface FrameworkLink {
 export class HomeComponent {
 
 	frameworks: FrameworkLink[] = [
-		{ name: 'React', url: 'http://localhost:3000/react' },
+		{ name: 'React', url: Environment.apiUrl + Environment.reactPort + '/react' },
 		{ name: 'Angular', url: '/angular' },
 		{ name: 'Vue', url: 'https://vuejs.org' },
 		{ name: 'Laravel', url: 'https://laravel.com' }

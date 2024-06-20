@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomValidateExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    @ResponseStatus(HttpStatus.OK)
+    public Response<Boolean> handleValidationExceptions(MethodArgumentNotValidException ex) {
         // Crear el objeto Response para manejar los errores de validación
-        Response<?> errorResponse = new Response<>();
+        Response<Boolean> errorResponse = new Response<>();
 
         // Log de los errores de validación
         log.error("Errores de validación: ");
@@ -42,6 +42,7 @@ public class CustomValidateExceptionHandler {
         errorResponse.setTitulo("Error de Validación");
         errorResponse.setTipo(Response.ERROR);
         errorResponse.setMensaje(message);
+        errorResponse.setObject(false);
 
         return errorResponse;
     }
