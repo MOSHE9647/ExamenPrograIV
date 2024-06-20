@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 
 # URL de las API's de SpringBoot
-baseURL = 'http://localhost:8080/api/v1/usuarios'
+baseURL = 'http://25.7.147.209:8080/api/v1/usuarios'
 
 class UsuarioListAPI(APIView):
     def get(self, request):

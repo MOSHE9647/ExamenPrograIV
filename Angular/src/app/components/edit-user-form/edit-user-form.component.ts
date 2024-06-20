@@ -38,6 +38,7 @@ export class EditUserFormComponent implements OnInit {
 		tipo: new FormControl('', Validators.required),
 		password: new FormControl('', Validators.required),
 		fechaCreacion: new FormControl(new Date(), Validators.required),
+		confirmPassword: new FormControl('', Validators.required)
 	}, { validators: this.passwordMatchValidator });
 
 	ngOnInit(): void {
