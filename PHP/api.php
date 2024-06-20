@@ -3,53 +3,41 @@
 $baseUrl = "http://localhost:8080/api/v1/usuarios";
 
 // Obtener el ID del usuario desde la URL (si aplica)
-$idUsuario = isset($_GET['id']) ? $_GET['id'] : null;
+$idUsuario = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT) : null;
 
 function enviarRespuesta($codigoHttp, $respuesta) {
     http_response_code($codigoHttp);
     header('Content-Type: application/json');
-    echo $respuesta;
+    echo json_encode(['success' => $codigoHttp < 400, 'data' => json_decode($respuesta), 'httpCode' => $codigoHttp]);
 }
 
 // Verificar el tipo de solicitud HTTP
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        if ($idUsuario == null) {
-            // Obtener lista de usuarios
-            $url = $baseUrl . "/getAll";
-        } else {
-            // Obtener usuario por ID
-            $url = $baseUrl . "/get?id=" . $idUsuario;
-        }
+        $url = $idUsuario == null ? $baseUrl . "/getAll" : $baseUrl . "/get?id=" . $idUsuario;
         break;
 
     case 'POST':
-        // Crear usuario
         $url = $baseUrl . "/create";
         $jsonData = file_get_contents('php://input');
         break;
 
     case 'PUT':
-        // Actualizar usuario
         $url = $baseUrl . "/update";
         $jsonData = file_get_contents('php://input');
         break;
 
     case 'DELETE':
         if ($idUsuario != null) {
-            // Eliminar usuario (lógica)
             $url = $baseUrl . "/delete/logical?id=" . $idUsuario;
         } else {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'ID de usuario no proporcionado.']);
+            enviarRespuesta(400, json_encode(['message' => 'ID de usuario no proporcionado.']));
             exit();
         }
         break;
 
     default:
-        // Responder con un error 405 (Método no permitido) para otros métodos HTTP
-        http_response_code(405);
-        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        enviarRespuesta(405, json_encode(['message' => 'Método no permitido.']));
         exit();
 }
 
@@ -58,7 +46,7 @@ $ch = curl_init($url);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'PUT') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -72,6 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if ($response === false) {
+    $error = curl_error($ch);
+    curl_close($ch);
+    enviarRespuesta(500, json_encode(['message' => 'Error de cURL: ' . $error]));
+    exit();
+}
+
 curl_close($ch);
 
 // Enviar respuesta al cliente
