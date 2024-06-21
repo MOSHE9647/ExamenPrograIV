@@ -2,7 +2,8 @@
   <div class="container mt-5 w-50">
     <h1 class="text-center">Enlaces a los Frameworks</h1>
     <ul class="list-group">
-      <li v-for="link in frameworks" :key="link.name" class="list-group-item list-group-item-action list-group-item-light">
+      <li v-for="link in frameworks" :key="link.name"
+        class="list-group-item list-group-item-action list-group-item-light">
         <a :href="resolveLink(link.url)" v-if="isExternalLink(link.url)">{{ link.name }}</a>
         <router-link :to="link.url" v-else>{{ link.name }}</router-link>
       </li>

@@ -1,26 +1,60 @@
 <template>
-  <router-view/>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    margin: 0px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    text-align: center;
+    margin-bottom: 40px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-nav {
-  padding: 30px;
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+router-view {
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.col-md-4,
+.col-md-6,
+.col-md-12 {
+    padding: 20px;
+}
+
+.col-md-4,
+.col-md-6,
+.col-md-12 label {
+    padding: 10px;
+    text-align: left;
+}
+
+.btn {
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    font-size: 1.3rem;
+    text-align: center;
+    height: 35px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    align-items: center;
 }
 </style>
