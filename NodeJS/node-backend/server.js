@@ -54,9 +54,10 @@ app.post('/usuarios', async (req, res) => {
     res.json(response);
 });
 
-app.put('/usuarios/:id', async (req, res) => {
-    const response = await forwardToPhp(`?action=update`, 'PUT', { ...req.body, id: req.params.id });
-    res.json(response);
+app.put('/usuarios', async (req, res) => {
+    const usuario = req.body;
+    const response = await forwardToPhp('?action=update', 'PUT', usuario);
+    res.status(response.status).json(response.data);
 });
 
 app.delete('/usuarios/:id/delete/logical', async (req, res) => {

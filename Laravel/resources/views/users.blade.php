@@ -1,49 +1,46 @@
-<!-- resources/views/users.blade.php -->
-
-@extends('layouts.app') <!-- Esto es opcional, depende de tu estructura de layouts -->
+@extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Listado de Usuarios</div>
-
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Correo Electrónico</th>
-                                <th>Teléfono</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                            <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->nombre }}</td>
-                                <td>{{ $user->apellido }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->telefono }}</td>
-                                <td>
-                                    <a href="{{ route('usuarios.edit', $user->id) }}" class="btn btn-primary">Editar</a>
-                                    <form action="{{ route('usuarios.destroy', $user->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Gestión de Usuarios</h1>
+    <div class="row">
+        <div class="col-12 d-flex mb-4">
+            <button class="btn btn-primary" onclick="toggleAddFormVisibility()">Añadir</button>
+        </div>
+        <div class="col-12 mb-4">
+            @include('users.table', ['users' => $users])
+        </div>
+        <div class="col-12" id="addUserForm" style="display: none;">
+            @include('users.add-form')
+        </div>
+        <div class="col-12" id="editUserForm" style="display: none;">
+            @include('users.edit-form', ['user' => null])
+        </div>
+        <div class="col-12" id="infoUserForm" style="display: none;">
+            @include('users.info-form', ['user' => null])
         </div>
     </div>
 </div>
+
+<script>
+    function toggleAddFormVisibility() {
+        document.getElementById('addUserForm').style.display = 'block';
+        document.getElementById('editUserForm').style.display = 'none';
+        document.getElementById('infoUserForm').style.display = 'none';
+    }
+
+    function toggleEditFormVisibility(user) {
+        document.getElementById('editUserForm').style.display = 'block';
+        document.getElementById('addUserForm').style.display = 'none';
+        document.getElementById('infoUserForm').style.display = 'none';
+        // Fill the form with user data
+    }
+
+    function toggleInfoFormVisibility(user) {
+        document.getElementById('infoUserForm').style.display = 'block';
+        document.getElementById('editUserForm').style.display = 'none';
+        document.getElementById('addUserForm').style.display = 'none';
+        // Fill the form with user data
+    }
+</script>
 @endsection

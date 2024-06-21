@@ -53,14 +53,3 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
-
-// Verifica que el archivo app.php exista y sea accesible
-if (!file_exists(__DIR__.'/../bootstrap/app.php')) {
-    die('El archivo app.php no existe en la ubicación esperada: ' . __DIR__ . '/../bootstrap/app.php');
-}
-
-// Verifica que el autoload de Composer haya sido incluido correctamente
-if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
-    die('El archivo autoload.php no existe en la ubicación esperada: ' . __DIR__ . '/../vendor/autoload.php');
-}
-
