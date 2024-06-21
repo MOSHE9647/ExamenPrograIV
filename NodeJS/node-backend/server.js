@@ -11,7 +11,7 @@ app.use(cors()); // Configuración CORS por defecto
 
 // Function to forward requests to PHP
 const forwardToPhp = async (path, method, data = {}) => {
-    const url ="http://localhost/ExamenPrograIV/PHP/api.php/${path}";
+    const url =`http://localhost/ExamenPrograIV/PHP/api.php/${path}`;
     const options = {
         method: method,
         url: url,
