@@ -17,8 +17,8 @@ export default {
   createUsuario(usuario) {
     return api.post('/usuarios', usuario);
   },
-  updateUsuario(id, usuario) {
-    return api.put(`/usuarios/${id}`, usuario);
+  updateUsuario(usuario) {
+    return api.put('/usuarios', usuario);
   },
   deleteUsuarioFisico(id) {
     return api.delete(`/usuarios/${id}/delete/physical`);
