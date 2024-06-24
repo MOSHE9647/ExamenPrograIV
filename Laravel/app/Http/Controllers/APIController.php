@@ -7,60 +7,38 @@ use Illuminate\Support\Facades\Http;
 
 class APIController extends Controller
 {
-    protected $nodeBaseUrl = 'http://localhost:3100';
+    protected $apiBaseUrl = 'http://localhost:3100';
 
     public function getAllUsers()
     {
-        return $this->forwardToNode('/usuarios', 'GET');
+        try {
+            $response = Http::get($this->apiBaseUrl . '/usuarios');
+            // Verifica el estado de la respuesta
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                // Maneja el caso en que la respuesta no sea exitosa
+                return ['success' => false, 'message' => 'Error al obtener el usuario: ' . $response->status()];
+            }
+        } catch (\Exception $e) {
+            // Manejar errores de la API externa
+            return ['success' => false, 'message' => 'Error fetching users from API: ' . $e->getMessage()];
+        }
     }
-
-    public function getActiveUsers()
-    {
-        return $this->forwardToNode('/usuarios/active', 'GET');
-    }
-
-    public function getInactiveUsers()
-    {
-        return $this->forwardToNode('/usuarios/inactive', 'GET');
-    }
-
-    public function getUserById($id)
-    {
-        return $this->forwardToNode("/usuarios/{$id}", 'GET');
-    }
-
-    public function createUser(Request $request)
-    {
-        return $this->forwardToNode('/usuarios', 'POST', $request->all());
-    }
-
-    public function updateUser(Request $request)
-    {
-        return $this->forwardToNode('/usuarios', 'PUT', $request->all());
-    }
-
-    public function deleteLogicalUser($id)
-    {
-        return $this->forwardToNode("/usuarios/{$id}/delete/logical", 'DELETE');
-    }
-
-    public function deletePhysicalUser($id)
-    {
-        return $this->forwardToNode("/usuarios/{$id}/delete/physical", 'DELETE');
-    }
-
-    // Función para reenviar las peticiones a Node.js
-    private function forwardToNode($path, $method, $data = [])
+    
+    public function getUser($id)
     {
         try {
-            $response = Http::send($method, $this->nodeBaseUrl . $path, [
-                'headers' => ['Content-Type' => 'application/json'],
-                'json' => $data,
-            ]);
-
-            return $response->json();
+            $response = Http::get($this->apiBaseUrl . '/usuarios/' . $id);
+            // Verifica el estado de la respuesta
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                // Maneja el caso en que la respuesta no sea exitosa
+                return ['success' => false, 'message' => 'Error al obtener el usuario: ' . $response->status()];
+            }
         } catch (\Exception $e) {
-            return ['error' => 'Error forwarding request'];
+            return ['success' => false, 'message' => 'Error al obtener el usuario: ' . $e->getMessage()];
         }
     }
 }

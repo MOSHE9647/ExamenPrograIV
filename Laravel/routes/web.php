@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $frameworks = [
-        ['name' => 'React', 'url' => 'http://localhost:3000/react'],
-        ['name' => 'Angular', 'url' => 'http://localhost:4200/angular'],
-        ['name' => 'Vue', 'url' => 'http://localhost:8081/vue'],
-        ['name' => 'Laravel', 'url' => 'https://laravel.com'],
-    ];
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-    return view('home', compact('frameworks'));
-});
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/laravel', [UserController::class,'user'])->name('user.index');
 
-Route::get('/laravel', function () {
-    return view('laravel'); //Cambiar nombre por vista dónde va a estar la tabla
-});
+Route::get('/laravel/create', [UserController::class, 'toggleAddFormVisibility'])->name('toggleAddFormVisibility');
+Route::get('/laravel/show/{id}', [UserController::class, 'toggleInfoFormVisibility'])->name('toggleInfoFormVisibility');
+Route::get('/laravel/edit/{id}', [UserController::class, 'toggleEditFormVisibility'])->name('toggleEditFormVisibility');
